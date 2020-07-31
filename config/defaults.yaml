@@ -1,0 +1,25 @@
+custom_joystick_command:
+    ros__parameters:
+        
+        topics:
+            in_mode: "/autonomous_driver"
+            out_cmd: "/hw/manual_cmd"
+            
+        in_msg_max_period: 5000 # [milliseconds] if msg have period greater than this the car is forced to a neutral actuator position
+        command_period: 100 # [milliseconds] time between each motors command sent
+        mode_period: 1000 # [milliseconds] time between each mode command sent
+
+        joystick_device_path: "/dev/input/js0"
+        joystick_test_print: false
+        throttle_axis:
+            index: 4
+            reverse: true
+            dead_range: 0.05
+        steering_axis:
+            index: 3
+            reverse: true 
+            dead_range: 0.05
+        buttons:
+            neutral_mode_index: 1
+            manual_mode_index: 5
+            autonomous_mode_index: 0

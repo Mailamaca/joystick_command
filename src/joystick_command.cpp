@@ -55,6 +55,7 @@ class JoystickCommand : public rclcpp::Node
     int neutral_button;
     int manual_button;
     int autonomous_button;
+    int manual_deadman_button;
 
     rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr subs_joy;
     //rclcpp::Subscription<common_interfaces::msg::VehicleMode>::SharedPtr subs_mode;
@@ -100,21 +101,30 @@ class JoystickCommand : public rclcpp::Node
     {
       RCLCPP_INFO(this->get_logger(), "subs_joy_callback"); 
 
-      float throttle = msg->axes[throttle_axis] * throttle_scale;
-      float steering_angle = msg->axes[steering_axis] * steering_scale;
-
+      
       // in manual mode the 'mode' must be mantained so i reset i every time
-      if (mode = 1) {
-        mode = 0;
+      if (mode >= 10 && mode < 20) {
+        mode = 10;
       }
 
       if (msg->buttons[neutral_button]){
         mode = 0;
       } else if (msg->buttons[manual_button]) {
-        mode = 1;
+        mode = 10;
+      } else if (mode == 10 && msg->buttons[manual_deadman_button]) {
+        mode = 11;
       } else if (msg->buttons[autonomous_button]) {
-        mode = 2;
+        mode = 20;
       }
+
+      float throttle = 0.0;
+      float steering_angle = 0.0;
+
+      if (mode == 11) {
+        throttle = msg->axes[throttle_axis] * throttle_scale;
+        steering_angle = msg->axes[steering_axis] * steering_scale;
+      }
+
 
       command_counter++;
       mode_counter++;
@@ -193,6 +203,7 @@ class JoystickCommand : public rclcpp::Node
       this->get_parameter("buttons.neutral_mode_index", neutral_button);
       this->get_parameter("buttons.manual_mode_index", manual_button);
       this->get_parameter("buttons.autonomous_mode_index", autonomous_button);
+      this->get_parameter("buttons.manual_deadman_index", manual_deadman_button);
       
     }
 
@@ -212,6 +223,7 @@ class JoystickCommand : public rclcpp::Node
       this->declare_parameter<int>("buttons.neutral_mode_index", 0);
       this->declare_parameter<int>("buttons.manual_mode_index", 1);
       this->declare_parameter<int>("buttons.autonomous_mode_index", 2);
+      this->declare_parameter<int>("buttons.manual_deadman_index", 3);
 
      
     }      

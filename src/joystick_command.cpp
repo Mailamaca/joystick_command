@@ -108,6 +108,7 @@ class JoystickCommand : public rclcpp::Node
         mode = 0;
       }
 
+      // test
       if (msg->buttons[neutral_button]){
         mode = 0;
       } else if (msg->buttons[manual_button]) {

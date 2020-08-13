@@ -22,6 +22,7 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(common_interfaces REQUIRED)
 
 add_executable(joystick_command
@@ -31,6 +32,7 @@ ament_target_dependencies(
 		joystick_command
 		rclcpp
 		std_msgs
+		sensor_msgs
 		common_interfaces)
 
 target_include_directories(joystick_command PUBLIC

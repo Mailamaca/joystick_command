@@ -33,6 +33,7 @@ ROS Node to interact with motors
 
     ```bash
     ros2 launch joystick_command joystick_command.launch.py
+    ros2 launch motors_interface motors_interface.launch.py
     ```
 
 # Copyright and License

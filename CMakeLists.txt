@@ -23,7 +23,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(common_interfaces REQUIRED)
+find_package(maila_msgs REQUIRED)
 
 add_executable(joystick_command
   src/joystick_command.cpp)
@@ -33,7 +33,7 @@ ament_target_dependencies(
 		rclcpp
 		std_msgs
 		sensor_msgs
-		common_interfaces)
+		maila_msgs)
 
 target_include_directories(joystick_command PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

@@ -10,8 +10,8 @@
 
 
 #include <sensor_msgs/msg/joy.hpp>
-#include "common_interfaces/msg/vehicle_control.hpp"
-#include "common_interfaces/msg/vehicle_mode.hpp"
+#include "maila_msgs/msg/vehicle_control.hpp"
+#include "maila_msgs/msg/vehicle_mode.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -57,13 +57,13 @@ class JoystickCommand : public rclcpp::Node
     int autonomous_button;
 
     rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr subs_joy;
-    //rclcpp::Subscription<common_interfaces::msg::VehicleMode>::SharedPtr subs_mode;
+    //rclcpp::Subscription<maila_msgs::msg::VehicleMode>::SharedPtr subs_mode;
     
     rclcpp::TimerBase::SharedPtr timer_subs_mode_timeout;
     rclcpp::TimerBase::SharedPtr timer_subs_joy_timeout;
 
-    rclcpp::Publisher<common_interfaces::msg::VehicleControl>::SharedPtr pub_command;
-    rclcpp::Publisher<common_interfaces::msg::VehicleMode>::SharedPtr pub_mode;
+    rclcpp::Publisher<maila_msgs::msg::VehicleControl>::SharedPtr pub_command;
+    rclcpp::Publisher<maila_msgs::msg::VehicleMode>::SharedPtr pub_mode;
     
     std::atomic<bool> subs_mode_ok;
     std::atomic<bool> subs_joy_ok;
@@ -87,7 +87,7 @@ class JoystickCommand : public rclcpp::Node
 
     }
 
-    void subs_mode_callback(const common_interfaces::msg::VehicleMode::SharedPtr msg)
+    void subs_mode_callback(const maila_msgs::msg::VehicleMode::SharedPtr msg)
     {
       RCLCPP_INFO(this->get_logger(), "subs_mode_callback");
       subs_mode_ok = true;
@@ -104,7 +104,7 @@ class JoystickCommand : public rclcpp::Node
       float steering_angle = msg->axes[steering_axis] * steering_scale;
 
       // in manual mode the 'mode' must be mantained so i reset i every time
-      if (mode = 1) {
+      if (mode == 1) {
         mode = 0;
       }
 
@@ -122,7 +122,7 @@ class JoystickCommand : public rclcpp::Node
 
       // out command msg
       if (command_counter >= command_rate) {
-        common_interfaces::msg::VehicleControl vehicle_control_msg;
+        maila_msgs::msg::VehicleControl vehicle_control_msg;
         vehicle_control_msg.throttle = throttle;
         vehicle_control_msg.steering_angle = steering_angle;
         pub_command->publish(vehicle_control_msg);
@@ -134,7 +134,7 @@ class JoystickCommand : public rclcpp::Node
 
       // out mode msg
       if (command_counter >= command_rate) {
-        common_interfaces::msg::VehicleMode vehicle_mode_msg;
+        maila_msgs::msg::VehicleMode vehicle_mode_msg;
         vehicle_mode_msg.mode = mode;
         pub_mode->publish(vehicle_mode_msg);
         RCLCPP_INFO(this->get_logger(), "Mode->\t%d", vehicle_mode_msg.mode);
@@ -165,7 +165,7 @@ class JoystickCommand : public rclcpp::Node
     }
 
     void create_subscriptions() {
-      //subs_mode = this->create_subscription<common_interfaces::msg::VehicleMode>(
+      //subs_mode = this->create_subscription<maila_msgs::msg::VehicleMode>(
       //  mode_topic_name, 10, std::bind(&JoystickCommand::subs_mode_callback, this, _1));
 
       subs_joy = this->create_subscription<sensor_msgs::msg::Joy>(
@@ -173,8 +173,8 @@ class JoystickCommand : public rclcpp::Node
     }
 
     void create_publishers() {
-      pub_command = this->create_publisher<common_interfaces::msg::VehicleControl>(cmd_topic_name, 10);
-      pub_mode = this->create_publisher<common_interfaces::msg::VehicleMode>(mode_topic_name, 10);
+      pub_command = this->create_publisher<maila_msgs::msg::VehicleControl>(cmd_topic_name, 10);
+      pub_mode = this->create_publisher<maila_msgs::msg::VehicleMode>(mode_topic_name, 10);
       
     }
 

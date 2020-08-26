@@ -1,4 +1,7 @@
 # motors_interface
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a981b185b9154d91a468ef7b8974ceeb)](https://app.codacy.com/gh/Mailamaca/joystick_command?utm_source=github.com&utm_medium=referral&utm_content=Mailamaca/joystick_command&utm_campaign=Badge_Grade_Settings)
+
 ROS Node to interact with motors
 
 ## Initialize ROS2 package

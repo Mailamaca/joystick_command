@@ -1,6 +1,8 @@
-custom_joystick_command:
-    ros__parameters:
-        
+#custom_joystick_command:
+#    ros__parameters:
+# removed for composition node    
+#(ref: https://github.com/ros2/rclcpp/issues/715  )
+
         topics:
             in_joy: "/joy"
             in_mode: "/autonomous_driver"

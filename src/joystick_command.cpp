@@ -9,6 +9,8 @@
 #include <unistd.h>
 
 
+#include "joystick_command/visibility_control.h"
+
 #include <sensor_msgs/msg/joy.hpp>
 #include "maila_msgs/msg/vehicle_control.hpp"
 #include "maila_msgs/msg/vehicle_mode.hpp"
@@ -20,20 +22,23 @@
 using namespace std::chrono_literals;
 using std::placeholders::_1;
 
+namespace motor
+{
 
 class JoystickCommand : public rclcpp::Node
 {
-  public:
+public:
+  COMPOSITION_PUBLIC
+  explicit JoystickCommand(const rclcpp::NodeOptions & options)
+  : Node("JoystickCommand", options) {
+    RCLCPP_INFO( this->get_logger(), "JoystickCommand::JoystickCommand");
 
-    JoystickCommand() : Node("joystick_command")
-    {
+    declare_parameters();
+    load_parameters_and_initialization();  
 
-      declare_parameters();
-      load_parameters_and_initialization();  
-
-      create_publishers();
-      create_subscriptions();
-      create_timers();      
+    create_publishers();
+    create_subscriptions();
+    create_timers();      
       
     }
   
@@ -222,11 +227,12 @@ class JoystickCommand : public rclcpp::Node
 
   };
 
-  int main(int argc, char * argv[])
-  {
-    rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<JoystickCommand>());
-    rclcpp::shutdown();
-    
-    return 0;
-  }
+}  // namespace motor
+
+#include "rclcpp_components/register_node_macro.hpp"
+
+// Register the component with class_loader.
+// This acts as a sort of entry point, allowing the component to be discoverable when its library
+// is being loaded into a running process.
+RCLCPP_COMPONENTS_REGISTER_NODE(motor::JoystickCommand)
+

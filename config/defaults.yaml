@@ -14,10 +14,10 @@
 
         throttle_axis:
             index: 4
-            scale: 1.0
+            scale: -1.0
         steering_axis:
             index: 3
-            scale: 1.0
+            scale: -1.0
         buttons:
             neutral_mode_index: 1
             manual_mode_index: 5

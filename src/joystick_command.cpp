@@ -94,7 +94,7 @@ public:
 
     void subs_mode_callback(const maila_msgs::msg::VehicleMode::SharedPtr msg)
     {
-      RCLCPP_INFO(this->get_logger(), "subs_mode_callback");
+      //RCLCPP_INFO(this->get_logger(), "subs_mode_callback");
       subs_mode_ok = true;
       mode = msg->mode;
 
@@ -103,7 +103,7 @@ public:
 
     void subs_joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg)
     {
-      RCLCPP_INFO(this->get_logger(), "subs_joy_callback"); 
+      //RCLCPP_INFO(this->get_logger(), "subs_joy_callback"); 
 
       float throttle = msg->axes[throttle_axis] * throttle_scale;
       float steering_angle = msg->axes[steering_axis] * steering_scale;
